@@ -1,0 +1,120 @@
+.admin-notification-form {
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.admin-notification-form h3 {
+  margin: 0 0 15px 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  color: #333;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #00b900;
+}
+
+.char-count {
+  font-size: 11px;
+  color: #999;
+  margin-top: 3px;
+}
+
+.post-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #00b900;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.post-button:hover {
+  background-color: #00a000;
+}
+
+.notifications-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.notifications-list h3 {
+  margin: 0 0 12px 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.empty-message {
+  color: #999;
+  font-size: 12px;
+  margin: 0;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+.notification-card {
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  padding: 12px;
+  margin-bottom: 8px;
+  border-left: 3px solid #00b900;
+}
+
+.notification-card h4 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.notification-card p {
+  margin: 0 0 8px 0;
+  color: #666;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.notif-admin {
+  display: block;
+  font-size: 11px;
+  color: #999;
+  margin-bottom: 4px;
+}
+
+.notif-time {
+  display: block;
+  font-size: 11px;
+  color: #999;
+}

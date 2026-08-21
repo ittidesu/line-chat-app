@@ -1,0 +1,182 @@
+.search-box {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-box input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: #00b900;
+}
+
+.search-box button {
+  padding: 10px 20px;
+  background-color: #00b900;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.search-box button:hover {
+  background-color: #00a000;
+}
+
+.search-results {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  margin-bottom: 8px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.user-avatar {
+  font-size: 32px;
+  margin-right: 12px;
+}
+
+.user-details {
+  flex: 1;
+}
+
+.username {
+  margin: 0;
+  font-weight: bold;
+  color: #333;
+  font-size: 14px;
+}
+
+.phone {
+  margin: 3px 0 0 0;
+  color: #999;
+  font-size: 12px;
+}
+
+.user-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.add-button {
+  padding: 8px 12px;
+  background-color: #00b900;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.add-button:hover {
+  background-color: #00a000;
+}
+
+.admin-button {
+  padding: 8px 12px;
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.admin-button:hover {
+  background-color: #ff5252;
+}
+
+.admin-panel {
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+  margin-top: 15px;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.admin-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+.admin-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ban-button {
+  padding: 10px;
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.ban-button:hover {
+  background-color: #ff5252;
+}
+
+.restrict-section {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.restrict-section label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 14px;
+  flex: 1;
+}
+
+.restrict-section input {
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  width: 60px;
+}
+
+.restrict-button {
+  padding: 8px 12px;
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.restrict-button:hover {
+  background-color: #f57c00;
+}
