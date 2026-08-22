@@ -1,15 +1,7 @@
 services:
-  - type: web
+  - type: static_site
     name: line-chat-app
-    env: node
     buildCommand: npm ci && npm run build
-    startCommand: npm start
-    envVars:
-      - key: NODE_ENV
-        value: production
-      - key: PORT
-        value: 3000
-      - key: CI
-        value: false
+    staticPublishPath: ./build
     region: oregon
     plan: free
