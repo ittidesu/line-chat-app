@@ -1,46 +1,140 @@
 #!/usr/bin/env node
 
-const http = require('http');
-const path = require('path');
-const fs = require('fs');
+const express = require("express");
+const http = require("http");
+const path = require("path");
+const { Server } = require("socket.io");
 
 const PORT = process.env.PORT || 3000;
 
-// Create a simple static file server for the build folder
-const server = http.createServer((req, res) => {
-  // Default to index.html for all routes (SPA routing)
-  let filePath = path.join(__dirname, 'build', req.url);
-  
-  // If requesting root or directory, serve index.html
-  if (req.url === '/' || req.url.endsWith('/')) {
-    filePath = path.join(__dirname, 'build', 'index.html');
+const app = express();
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
   }
-  
-  // Try to serve the file
-  fs.readFile(filePath, (err, content) => {
-    if (err) {
-      // If file not found, serve index.html for SPA routing
-      fs.readFile(path.join(__dirname, 'build', 'index.html'), (err, content) => {
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end(content, 'utf-8');
-      });
-    } else {
-      // Determine content type
-      let contentType = 'text/html';
-      if (filePath.endsWith('.js')) contentType = 'application/javascript';
-      else if (filePath.endsWith('.css')) contentType = 'text/css';
-      else if (filePath.endsWith('.json')) contentType = 'application/json';
-      else if (filePath.endsWith('.png')) contentType = 'image/png';
-      else if (filePath.endsWith('.jpg')) contentType = 'image/jpeg';
-      else if (filePath.endsWith('.gif')) contentType = 'image/gif';
-      else if (filePath.endsWith('.svg')) contentType = 'image/svg+xml';
-      
-      res.writeHead(200, { 'Content-Type': contentType });
-      res.end(content, 'utf-8');
-    }
+});
+
+app.use(express.json());
+
+// ヘルスチェック
+app.get("/api/health", (req, res) => {
+  res.json({
+    ok: true,
+    message: "LINE Chat Server is running"
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+// Reactのbuildを配信
+const buildPath = path.join(__dirname, "build");
+
+app.use(express.static(buildPath));
+
+// 接続中ユーザー
+const users = new Map();
+
+// 接続
+io.on("connection", (socket) => {
+  console.log("Client connected:", socket.id);
+
+  // ログイン
+  socket.on("user:join", (user) => {
+    if (!user || !user.id) {
+      return;
+    }
+
+    users.set(socket.id, {
+      socketId: socket.id,
+      ...user
+    });
+
+    socket.join(`user:${user.id}`);
+
+    console.log(`User joined: ${user.id}`);
+
+    socket.emit("user:joined", {
+      success: true,
+      user
+    });
+
+    // オンライン状態を全員に通知
+    io.emit("user:online", {
+      userId: user.id
+    });
+  });
+
+  // チャットルーム参加
+  socket.on("chat:join", ({ chatId }) => {
+    if (!chatId) return;
+
+    socket.join(`chat:${chatId}`);
+
+    console.log(
+      `${socket.id} joined chat:${chatId}`
+    );
+  });
+
+  // メッセージ送信
+  socket.on("message:send", (message) => {
+    if (!message) return;
+
+    const chatId = message.chatId;
+
+    if (!chatId) {
+      console.log("message:send: chatId is missing");
+      return;
+    }
+
+    const newMessage = {
+      ...message,
+      id:
+        message.id ||
+        `${Date.now()}-${Math.random()
+          .toString(36)
+          .slice(2)}`,
+      createdAt:
+        message.createdAt ||
+        new Date().toISOString()
+    };
+
+    console.log("Message:", newMessage);
+
+    // 同じチャットにいる全員へ送信
+    io.to(`chat:${chatId}`).emit(
+      "message:received",
+      newMessage
+    );
+  });
+
+  // 切断
+  socket.on("disconnect", () => {
+    const user = users.get(socket.id);
+
+    if (user) {
+      io.emit("user:offline", {
+        userId: user.id
+      });
+
+      console.log(`User disconnected: ${user.id}`);
+    }
+
+    users.delete(socket.id);
+
+    console.log("Client disconnected:", socket.id);
+  });
+});
+
+// React Router等のSPA用
+app.get("*", (req, res) => {
+  res.sendFile(
+    path.join(buildPath, "index.html")
+  );
+});
+
+server.listen(PORT, "0.0.0.0", () => {
+  console.log(
+    `LINE Chat Server running on port ${PORT}`
+  );
 });
